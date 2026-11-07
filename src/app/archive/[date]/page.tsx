@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import { PuzzleCard } from "@/features/puzzle/PuzzleCard";
 import {
   archivePuzzles,
-  formatPuzzleDate,
   getArchivedPuzzle,
 } from "@/features/puzzle/data";
+import { formatPuzzleDate } from "@/features/puzzle/format";
 
 type ArchivedPuzzlePageProps = {
   params: Promise<{ date: string }>;
@@ -37,7 +37,14 @@ export default async function ArchivedPuzzlePage({
         </div>
         <span className="date-chip">ARCHIVE</span>
       </div>
-      <PuzzleCard archived puzzle={puzzle} />
+      <PuzzleCard
+        archived
+        puzzle={{
+          date: puzzle.date,
+          decade: puzzle.decade,
+          clues: puzzle.clues,
+        }}
+      />
     </div>
   );
 }

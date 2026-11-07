@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { archivePuzzles, formatPuzzleDate } from "@/features/puzzle/data";
+import { archivePuzzles } from "@/features/puzzle/data";
+import { formatPuzzleDate } from "@/features/puzzle/format";
 
 export default function ArchivePage() {
   return (

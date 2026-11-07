@@ -6,16 +6,15 @@ export type Puzzle = {
   clues: string[];
 };
 
-// Fictional sample content for the scaffold; replace with real puzzle data later.
 export const todayPuzzle: Puzzle = {
   date: "2026-11-01",
-  answer: "Midnight Frequencies",
-  artist: "The Velvet Satellites",
-  decade: "The 1980s",
+  answer: "Discovery",
+  artist: "Daft Punk",
+  decade: "The 2000s",
   clues: [
-    "A synth-driven record from the 1980s",
-    "The band formed beside the sea",
-    "Their best-known single mentions a city at night",
+    "A French electronic duo's second studio album",
+    "Released at the start of the 2000s",
+    "Blends house music with disco and synth-pop",
   ],
 };
 
@@ -52,13 +51,4 @@ export const archivePuzzles: Puzzle[] = [
 
 export function getArchivedPuzzle(date: string): Puzzle | undefined {
   return archivePuzzles.find((puzzle) => puzzle.date === date);
-}
-
-export function formatPuzzleDate(date: string): string {
-  return new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${date}T12:00:00Z`));
 }

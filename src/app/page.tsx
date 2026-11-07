@@ -1,5 +1,6 @@
 import { PuzzleCard } from "@/features/puzzle/PuzzleCard";
-import { formatPuzzleDate, todayPuzzle } from "@/features/puzzle/data";
+import { formatPuzzleDate } from "@/features/puzzle/format";
+import { todayPuzzle } from "@/features/puzzle/data";
 
 export default function HomePage() {
   return (
@@ -14,7 +15,13 @@ export default function HomePage() {
         </div>
         <span className="date-chip">{formatPuzzleDate(todayPuzzle.date)}</span>
       </div>
-      <PuzzleCard puzzle={todayPuzzle} />
+      <PuzzleCard
+        puzzle={{
+          date: todayPuzzle.date,
+          decade: todayPuzzle.decade,
+          clues: todayPuzzle.clues,
+        }}
+      />
     </div>
   );
 }

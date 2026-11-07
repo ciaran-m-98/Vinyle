@@ -173,40 +173,19 @@ a {
 
 .record-art {
   aspect-ratio: 1;
-  background:
-    radial-gradient(circle at 50% 50%, #d8f36a 0 4%, transparent 4.5%),
-    repeating-radial-gradient(circle at 50% 50%, #33312e 0 1px, #242321 2px 4px);
-  border: 12px solid #191817;
-  border-radius: 50%;
-  box-shadow: 0 16px 35px #18161326;
+  background: #dedbd3;
+  border-radius: 3px;
   margin: 0 auto;
   max-width: 340px;
-  position: relative;
   width: 100%;
 }
 
-.record-art::before,
-.record-art::after {
-  border: 1px solid #ffffff20;
-  border-radius: 50%;
-  content: "";
-  inset: 12%;
-  position: absolute;
-}
-
-.record-art::after {
-  inset: 24%;
-}
-
-.record-label {
-  background: #d8f36a;
-  border-radius: 50%;
-  height: 18%;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 18%;
+.artwork-unavailable {
+  align-items: center;
+  color: #77736b;
+  display: flex;
+  font-size: 12px;
+  justify-content: center;
 }
 
 .puzzle-details {
@@ -315,10 +294,21 @@ a {
   background: #35332d;
 }
 
-.mock-note {
-  color: #969188;
-  font-size: 10px;
+.guess-feedback {
+  color: #656158;
+  font-size: 11px;
   line-height: 1.5;
+  margin: 12px 0 0;
+}
+
+.guess-feedback-error {
+  color: #9c3d32;
+}
+
+.solved-answer {
+  color: #191815;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
   margin: 12px 0 0;
 }
 
