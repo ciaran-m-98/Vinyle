@@ -1,7 +1,4 @@
-import {
-  archivePuzzles,
-  todayPuzzle,
-} from "@/features/puzzle/data";
+import { todayPuzzle } from "@/features/puzzle/data";
 
 type TheAudioDbAlbum = {
   strAlbumThumb?: unknown;
@@ -52,19 +49,15 @@ function isArtworkUrl(value: unknown): value is string {
 
 export async function GET(request: Request) {
   const date = new URL(request.url).searchParams.get("date");
-  const puzzle =
-    date === todayPuzzle.date
-      ? todayPuzzle
-      : archivePuzzles.find((item) => item.date === date);
 
-  if (!puzzle) {
+  if (date !== todayPuzzle.date) {
     return new Response("Puzzle not found.", { status: 404 });
   }
 
   try {
     const searchParams = new URLSearchParams({
-      s: puzzle.artist,
-      a: puzzle.answer,
+      s: todayPuzzle.artist,
+      a: todayPuzzle.answer,
     });
     const albumEndpoint = `https://www.theaudiodb.com/api/v1/json/123/searchalbum.php?${searchParams}`;
     let artworkUrl: unknown;

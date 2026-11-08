@@ -1,19 +1,10 @@
-import { archivePuzzles, todayPuzzle } from "@/features/puzzle/data";
+import { todayPuzzle } from "@/features/puzzle/data";
 
 type GuessRequest = {
   date?: unknown;
   guess?: unknown;
+  finalAttempt?: unknown;
 };
-
-function findPuzzle(date: unknown) {
-  if (typeof date !== "string") {
-    return undefined;
-  }
-
-  return date === todayPuzzle.date
-    ? todayPuzzle
-    : archivePuzzles.find((puzzle) => puzzle.date === date);
-}
 
 function normalizeGuess(value: string) {
   return value.trim().normalize("NFKC").toLocaleLowerCase();
@@ -28,9 +19,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "Enter a guess to continue." }, { status: 400 });
   }
 
-  const puzzle = findPuzzle(body.date);
-
-  if (!puzzle) {
+  if (body.date !== todayPuzzle.date) {
     return Response.json({ error: "Puzzle not found." }, { status: 404 });
   }
 
@@ -38,13 +27,22 @@ export async function POST(request: Request) {
     return Response.json({ error: "Enter a guess to continue." }, { status: 400 });
   }
 
-  if (normalizeGuess(body.guess) !== normalizeGuess(puzzle.answer)) {
+  if (normalizeGuess(body.guess) !== normalizeGuess(todayPuzzle.answer)) {
+    if (body.finalAttempt === true) {
+      return Response.json({
+        correct: false,
+        gameOver: true,
+        answer: todayPuzzle.answer,
+        artist: todayPuzzle.artist,
+      });
+    }
+
     return Response.json({ correct: false });
   }
 
   return Response.json({
     correct: true,
-    answer: puzzle.answer,
-    artist: puzzle.artist,
+    answer: todayPuzzle.answer,
+    artist: todayPuzzle.artist,
   });
 }

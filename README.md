@@ -1,7 +1,6 @@
 # Vinyle
 
-A small Next.js starter for a daily music puzzle. Puzzle content is fictional
-sample data, and the record illustration is an original CSS placeholder.
+A daily album guessing game with pixelated artwork and progressive album hints.
 
 ## Getting started
 
@@ -10,12 +9,13 @@ npm install
 npm run dev
 ```
 
-The app includes the daily puzzle at `/`, a list of sample puzzles at `/archive`,
-and archived puzzle pages at `/archive/[date]`. The daily puzzle artwork is
-looked up server-side from TheAudioDB's public test API and rendered pixelated
-on a canvas; incorrect guesses progressively reveal it. Update
-`src/features/puzzle/data.ts` to change the puzzle content. The archive entries
-are fictional sample puzzles and may not have matching album artwork.
+The splash screen is at `/`; selecting Play reveals the puzzle without leaving
+the page. `/play` remains available as a direct puzzle route. Progress is saved
+per puzzle in the current tab's session storage and restored when the game is
+reopened. Puzzle artwork is looked up server-side from TheAudioDB's public test
+API and rendered pixelated on a canvas. Album hints begin after two incorrect
+guesses and are revealed one at a time. Update `src/features/puzzle/data.ts` to
+change the puzzle content.
 
 Useful checks:
 
