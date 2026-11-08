@@ -97,6 +97,15 @@ function progressStorageKey(puzzleDate: string) {
   return `vinyle:puzzle-progress:v${PROGRESS_VERSION}:${puzzleDate}`;
 }
 
+function clearPuzzleProgress(storage: Storage) {
+  for (let index = storage.length - 1; index >= 0; index -= 1) {
+    const key = storage.key(index);
+    if (key?.startsWith(PROGRESS_STORAGE_PREFIX)) {
+      storage.removeItem(key);
+    }
+  }
+}
+
 export function PuzzleCard({ puzzle }: PuzzleCardProps) {
   const [guess, setGuess] = useState("");
   const [wrongGuesses, setWrongGuesses] = useState(0);
@@ -273,22 +282,34 @@ export function PuzzleCard({ puzzle }: PuzzleCardProps) {
     }
 
     try {
-      window.sessionStorage.setItem(
-        progressStorageKey(puzzle.date),
-        JSON.stringify({
-          version: PROGRESS_VERSION,
-          puzzleDate: puzzle.date,
-          guesses,
-          wrongGuesses,
-          hints,
-          solved,
-          gameOver,
-          isFinalAttempt,
-        } satisfies PuzzleProgress),
-      );
+      const storage = window.sessionStorage;
+      if (
+        guesses.length === 0 &&
+        wrongGuesses === 0 &&
+        hints.length === 0 &&
+        !solved &&
+        !gameOver &&
+        !isFinalAttempt
+      ) {
+        storage.removeItem(progressStorageKey(puzzle.date));
+      } else {
+        storage.setItem(
+          progressStorageKey(puzzle.date),
+          JSON.stringify({
+            version: PROGRESS_VERSION,
+            puzzleDate: puzzle.date,
+            guesses,
+            wrongGuesses,
+            hints,
+            solved,
+            gameOver,
+            isFinalAttempt,
+          } satisfies PuzzleProgress),
+        );
+      }
     } catch {
       queueMicrotask(() => {
-        setProgressNotice("Progress could not be saved in this browser session.");
+        setProgressNotice("Progress could not be saved or cleared in this browser session.");
       });
     }
   }, [
@@ -301,6 +322,29 @@ export function PuzzleCard({ puzzle }: PuzzleCardProps) {
     solved,
     wrongGuesses,
   ]);
+
+  function resetPuzzleProgress() {
+    let resetNotice = "";
+    try {
+      clearPuzzleProgress(window.sessionStorage);
+    } catch {
+      resetNotice =
+        "The puzzle was reset, but saved progress could not be cleared in this browser.";
+    }
+
+    setGuess("");
+    setWrongGuesses(0);
+    setGuesses([]);
+    setHints([]);
+    setSolved(false);
+    setGameOver(false);
+    setIsFinalAttempt(false);
+    setFeedback("");
+    setSolvedTitle("");
+    setSolvedArtist("");
+    setRequestError("");
+    setProgressNotice(resetNotice);
+  }
 
   async function submitGuess(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -495,6 +539,14 @@ export function PuzzleCard({ puzzle }: PuzzleCardProps) {
             {solvedTitle} · {solvedArtist}
           </p>
         )}
+        <button
+          className="progress-reset-button"
+          disabled={checking}
+          onClick={resetPuzzleProgress}
+          type="button"
+        >
+          Reset test progress
+        </button>
       </div>
     </section>
   );

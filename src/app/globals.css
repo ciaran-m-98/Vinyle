@@ -281,6 +281,27 @@ a {
   color: #9c3d32;
 }
 
+.progress-reset-button {
+  background: transparent;
+  border: 0;
+  color: #77736b;
+  cursor: pointer;
+  font-size: 11px;
+  margin-top: 20px;
+  padding: 6px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.progress-reset-button:hover {
+  color: #191815;
+}
+
+.progress-reset-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .solved-answer {
   color: #191815;
   font-family: Georgia, "Times New Roman", serif;
